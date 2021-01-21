@@ -94,6 +94,8 @@ class Migration(object):
         self.add(self.changes.pk_constraints(drops_only=True))
         self.add(self.changes.non_mv_indexes(drops_only=True))
 
+        # Related issue: https://github.com/djrobstep/migra/issues/92
+        self.add(self.changes.non_table_selectable_creations()) # TODO(rhomel): not sure if creating functions here breaks other behavior
         self.add(self.changes.tables_only_selectables())
 
         self.add(self.changes.sequences(drops_only=True))
@@ -103,7 +105,6 @@ class Migration(object):
         self.add(self.changes.pk_constraints(creations_only=True))
         self.add(self.changes.non_pk_constraints(creations_only=True))
 
-        self.add(self.changes.non_table_selectable_creations())
         self.add(self.changes.mv_indexes(creations_only=True))
 
         if privileges:
